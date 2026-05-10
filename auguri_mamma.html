@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auguri Mamma</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Lora',serif; overflow-x:hidden; }
+
+/* ── SCHERMATA 1 ── */
+#screen1 {
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  min-height:100vh;
+  background:linear-gradient(135deg,#f9a8c9 0%,#f472b6 40%,#ec4899 100%);
+  position:relative; overflow:hidden; text-align:center; padding:2rem;
+}
+.hearts-bg { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+.heart-float {
+  position:absolute; opacity:0.55;
+  animation:floatUp linear infinite;
+}
+@keyframes floatUp {
+  0%   { transform:translateY(110vh) rotate(-15deg); opacity:0; }
+  10%  { opacity:0.55; }
+  90%  { opacity:0.55; }
+  100% { transform:translateY(-10vh) rotate(15deg); opacity:0; }
+}
+#screen1 h1 {
+  font-family:'Dancing Script',cursive;
+  font-size:clamp(3rem,10vw,5.5rem);
+  color:#fff;
+  text-shadow:0 4px 24px rgba(180,30,80,0.35);
+  margin-bottom:1.5rem;
+  animation:fadeDown 0.9s ease both;
+}
+@keyframes fadeDown {
+  from { opacity:0; transform:translateY(-30px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.subtitle {
+  font-family:'Lora',serif; font-style:italic;
+  font-size:clamp(1rem,3vw,1.3rem); color:#fff0f5;
+  margin-bottom:2.5rem; animation:fadeDown 0.9s 0.2s ease both;
+}
+#btnStart {
+  font-family:'Dancing Script',cursive; font-size:1.6rem; font-weight:700;
+  color:#c2185b; background:#fff; border:none; border-radius:50px;
+  padding:0.75rem 2.8rem; cursor:pointer;
+  box-shadow:0 8px 30px rgba(180,30,80,0.3);
+  transition:transform 0.18s,box-shadow 0.18s;
+  animation:fadeDown 0.9s 0.4s ease both;
+}
+#btnStart:hover { transform:scale(1.07); box-shadow:0 12px 36px rgba(180,30,80,0.4); }
+#btnStart:active { transform:scale(0.97); }
+.big-heart { position:absolute; font-size:7rem; opacity:0.13; pointer-events:none; }
+
+/* ── SCHERMATA 2 ── */
+#screen2 {
+  display:none; flex-direction:column; align-items:center; justify-content:center;
+  min-height:100vh;
+  background:linear-gradient(160deg,#fce4ec 0%,#ffc1d8 55%,#f8bbd0 100%);
+  padding:2.5rem 1.5rem; text-align:center;
+  position:relative; overflow:hidden;
+  animation:fadeIn 0.8s ease;
+}
+@keyframes fadeIn {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.poem-card {
+  background:rgba(255,255,255,0.65); backdrop-filter:blur(8px);
+  border-radius:24px; padding:2rem 2rem 1.6rem;
+  max-width:560px; width:100%;
+  box-shadow:0 8px 40px rgba(200,60,100,0.15);
+  position:relative; z-index:1;
+}
+.poem-title {
+  font-family:'Dancing Script',cursive;
+  font-size:clamp(1.6rem,5vw,2.3rem);
+  color:#c2185b; margin-bottom:1rem;
+}
+.poem-body {
+  font-family:'Lora',serif;
+  font-size:clamp(0.82rem,2.2vw,0.95rem);
+  line-height:1.75; color:#880e4f;
+}
+.poem-body .stanza { margin-bottom:0.9rem; }
+.poem-body p { margin-bottom:0.1rem; }
+
+/* hint grande */
+.hint {
+  font-family:'Dancing Script',cursive;
+  font-size:clamp(1.15rem,3.5vw,1.5rem);
+  color:#880e4f;
+  margin-top:1.6rem; padding-top:1.4rem;
+  border-top:1px solid rgba(180,30,80,0.25);
+  line-height:1.8;
+}
+
+/* bottone indizio */
+#btnClue {
+  font-family:'Dancing Script',cursive; font-size:1.3rem; font-weight:700;
+  color:#fff; background:#e91e8c;
+  border:none; border-radius:50px;
+  padding:0.65rem 2.2rem; cursor:pointer; margin-top:1.4rem;
+  box-shadow:0 6px 22px rgba(180,30,80,0.28);
+  transition:transform 0.18s,box-shadow 0.18s;
+}
+#btnClue:hover { transform:scale(1.06); box-shadow:0 10px 28px rgba(180,30,80,0.38); }
+#btnClue:active { transform:scale(0.97); }
+
+/* pannello indizio nascosto */
+#cluePanel {
+  display:none;
+  background:rgba(255,255,255,0.75); backdrop-filter:blur(6px);
+  border-radius:18px; padding:1.2rem 1.6rem; margin-top:1rem;
+  max-width:560px; width:100%; position:relative; z-index:1;
+  animation:fadeIn 0.6s ease;
+  box-shadow:0 6px 28px rgba(200,60,100,0.13);
+}
+#cluePanel p {
+  font-family:'Dancing Script',cursive;
+  font-size:clamp(1.05rem,3.2vw,1.35rem);
+  color:#880e4f; line-height:1.8;
+}
+
+.deco-hearts-2 { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+.dh { position:absolute; font-size:2.5rem; opacity:0.18; }
+</style>
+</head>
+<body>
+
+<!-- ═══ SCHERMATA 1 ═══ -->
+<div id="screen1">
+  <div class="hearts-bg" id="heartsBg"></div>
+  <span class="big-heart" style="top:-2%;left:-3%;transform:rotate(-20deg)">♥</span>
+  <span class="big-heart" style="bottom:-3%;right:-2%;transform:rotate(15deg)">♥</span>
+  <span class="big-heart" style="top:40%;left:-5%;font-size:5rem">♥</span>
+  <span class="big-heart" style="top:10%;right:-3%;font-size:5rem">♥</span>
+  <h1>Auguri Mamma</h1>
+  <p class="subtitle">Con tutto l'amore della tua famiglia ♥</p>
+  <button id="btnStart">Inizia !</button>
+</div>
+
+<!-- ═══ SCHERMATA 2 ═══ -->
+<div id="screen2">
+  <div class="deco-hearts-2">
+    <span class="dh" style="top:5%;left:4%">♥</span>
+    <span class="dh" style="top:8%;right:6%">♥</span>
+    <span class="dh" style="bottom:6%;left:8%">♥</span>
+    <span class="dh" style="bottom:4%;right:5%">♥</span>
+    <span class="dh" style="top:50%;left:2%;font-size:1.8rem">♥</span>
+    <span class="dh" style="top:50%;right:2%;font-size:1.8rem">♥</span>
+  </div>
+
+  <div class="poem-card">
+    <div class="poem-title">Per te, Mamma ♥</div>
+    <div class="poem-body">
+      <div class="stanza">
+        <p>Sei la luce che sorge all'alba serena,</p>
+        <p>il rifugio sicuro che colma ogni pena.</p>
+        <p>Le tue mani calde che sanno abbracciare,</p>
+        <p>ci hanno insegnato il bello del dare.</p>
+      </div>
+      <div class="stanza">
+        <p>Nei tuoi occhi vediamo il calore del sole,</p>
+        <p>nel tuo cuore fioriscono le più belle parole.</p>
+        <p>Oggi è il tuo giorno, splendi e sorridi,</p>
+        <p>ti amiamo di più con immensa tenerezza.</p>
+      </div>
+    </div>
+
+    <div class="hint">
+      «posto nuovo riscoperto dietro la porta<br>
+      il regalo abbiam messo»
+    </div>
+
+    <button id="btnClue">Non hai trovato? Un indizio in più ♥</button>
+  </div>
+
+  <div id="cluePanel">
+    <p>«piena di vestiti era codesta stanza<br>
+    Nico la chitarra suona con costanza»</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  const emojis = ['♥','💕','💗','💖','💝'];
+  const bg = document.getElementById('heartsBg');
+
+  function spawnHeart(){
+    const h = document.createElement('span');
+    h.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    h.className = 'heart-float';
+    const size = 1 + Math.random()*1.4;
+    h.style.cssText = `left:${Math.random()*100}%;font-size:${size}rem;animation-duration:${5+Math.random()*7}s;animation-delay:${Math.random()*4}s;opacity:${0.3+Math.random()*0.4};`;
+    bg.appendChild(h);
+    setTimeout(()=>h.remove(), 14000);
+  }
+  for(let i=0;i<18;i++) setTimeout(spawnHeart, i*300);
+  setInterval(spawnHeart, 800);
+
+  document.getElementById('btnStart').addEventListener('click',function(){
+    document.getElementById('screen1').style.display='none';
+    document.getElementById('screen2').style.display='flex';
+  });
+
+  document.getElementById('btnClue').addEventListener('click',function(){
+    const panel = document.getElementById('cluePanel');
+    if(panel.style.display==='none'||panel.style.display===''){
+      panel.style.display='block';
+      this.textContent = 'Ora trova il regalo! ♥';
+      this.style.background = '#ad1457';
+    } else {
+      panel.style.display='none';
+      this.textContent = 'Non hai trovato? Un indizio in più ♥';
+      this.style.background = '#e91e8c';
+    }
+  });
+})();
+</script>
+</body>
+</html>
